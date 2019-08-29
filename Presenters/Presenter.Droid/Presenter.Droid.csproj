@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Presenter.Droid.Test\obj\Debug\Presenter.Droid.Test.csprojAssemblyReference.cache" />
+    <None Remove="Presenter.Droid.Test\packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common\Common.csproj" />
+  </ItemGroup>
+</Project>
