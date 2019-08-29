@@ -42,20 +42,69 @@ namespace Common.ViewModels
 
         private async Task LoadItems()
         {
-            Items.Clear();
-            (await modelDataStore.GetItemsAsync()).ForEach(x => Items.Add(x));
+
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                Items.Clear();
+                (await modelDataStore.GetItemsAsync()).ForEach(x => Items.Add(x));
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private async Task AddItem(T item)
         {
-            await modelDataStore.AddItemAsync(item);
-            Items.Add(item);
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                Items.Add(item);
+                await modelDataStore.AddItemAsync(item);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         private async Task DeleteAllItems()
         {
-            await modelDataStore.DeleteAllAsync();
-            Items.Clear();
+            if (IsBusy)
+                return;
+
+            IsBusy = true;
+
+            try
+            {
+                Items.Clear();
+                await modelDataStore.DeleteAllAsync();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            finally
+            {
+                IsBusy = false;
+            }
         }
 
         #endregion
