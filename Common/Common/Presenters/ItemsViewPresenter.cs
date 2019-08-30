@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 using Common.Helpers;
 using Common.Models;
 
-namespace Common.ViewModels
+namespace Common.Presenters
 {
-    public class ItemsViewModel<T> : BaseViewModel, IDisposable
+    public class ItemsViewPresenter<T> : BaseViewPresenter, IDisposable
     {
         private readonly IDataStore<T> modelDataStore;
 
@@ -15,7 +15,7 @@ namespace Common.ViewModels
         public Command AddItemCommand { get; private set; }
         public Command DeleteAllCommand { get; private set; }
 
-        public ItemsViewModel(IDataStore<T> model)
+        public ItemsViewPresenter(IDataStore<T> model)
         {
             modelDataStore = model;
             Init();
@@ -35,6 +35,7 @@ namespace Common.ViewModels
         private void Init()
         {
             Items = new ObservableCollection<T>();
+
             LoadItemsCommand = new Command(async () => await LoadItems());
             AddItemCommand = new Command<T>(async (T item) => await AddItem(item));
             DeleteAllCommand = new Command<T>(async (T item) => await DeleteAllItems());

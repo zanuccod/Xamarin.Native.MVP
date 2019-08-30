@@ -1,7 +1,7 @@
 ﻿using System;
 using SQLite;
 
-namespace Presenter.Droid.Entities
+namespace Common.Entities
 {
     public class Student
     {

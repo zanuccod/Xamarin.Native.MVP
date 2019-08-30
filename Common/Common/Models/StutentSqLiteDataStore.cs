@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using Common.Models;
-using Presenter.Droid.Entities;
+using Common.Entities;
 
-namespace Presenter.Droid.Models
+namespace Common.Models
 {
     public class StudentSqLiteDataStore : SqLiteBase, IDataStore<Student>
     {

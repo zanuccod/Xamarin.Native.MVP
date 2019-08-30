@@ -3,10 +3,10 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using NUnit.Framework;
-using Presenter.Droid.Entities;
-using Presenter.Droid.Models;
+using Common.Entities;
+using Common.Models;
 
-namespace Presenter.Droid.Test.Models
+namespace Common.Test.Models
 {
     [TestFixture]
     public class StudentDataStoreSqlTest

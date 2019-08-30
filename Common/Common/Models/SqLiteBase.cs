@@ -2,7 +2,7 @@
 using System.IO;
 using SQLite;
 
-namespace Presenter.Droid.Models
+namespace Common.Models
 {
     public abstract class SqLiteBase : IDisposable
     {

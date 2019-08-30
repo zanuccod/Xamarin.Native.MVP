@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace Common.ViewModels
+namespace Common.Presenters
 {
-    public abstract class BaseViewModel : INotifyPropertyChanged
+    public abstract class BaseViewPresenter : INotifyPropertyChanged
     {
         bool isBusy;
         public bool IsBusy
