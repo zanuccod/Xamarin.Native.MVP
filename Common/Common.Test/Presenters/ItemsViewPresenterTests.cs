@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using Common.Entities;
+using Common.IViews;
 using Common.Models;
 using Common.Presenters;
 using Moq;
@@ -12,17 +13,24 @@ namespace Common.Test.Presenters
     [TestFixture]
     public class ItemsViewPresenter
     {
-        Mock<IDataStore<Student>> mockDataStore;
+        Mock<IDataStore<Student>> mockModel;
         private IDataStore<Student> model;
+
+        Mock<IItemsView> mockView;
+        private IItemsView view;
+
         private ItemsViewPresenter<Student> itemsViewPresenter;
 
         [SetUp]
         public void BeforeEachTest()
         {
-            mockDataStore = new Mock<IDataStore<Student>>();
-            model = mockDataStore.Object;
+            mockModel = new Mock<IDataStore<Student>>();
+            model = mockModel.Object;
 
-            itemsViewPresenter = new ItemsViewPresenter<Student>(model);
+            mockView = new Mock<IItemsView>();
+            view = mockView.Object;
+
+            itemsViewPresenter = new ItemsViewPresenter<Student>(view, model);
         }
 
         [Test]
@@ -46,7 +54,7 @@ namespace Common.Test.Presenters
             };
 
             // mock expected result of GetItemsAsync() method
-            mockDataStore.Setup(x => x.GetItemsAsync()).Returns(Task.FromResult(expectedResult));
+            mockModel.Setup(x => x.GetItemsAsync()).Returns(Task.FromResult(expectedResult));
 
             // Act
             itemsViewPresenter.LoadItemsCommand.Execute(null);
@@ -71,7 +79,7 @@ namespace Common.Test.Presenters
                 new Student() { Name = "name", BornDate = "01-01-1970", Country = "country_test" }
             };
             // mock expected result of GetItemsAsync() method
-            mockDataStore.Setup(x => x.GetItemsAsync()).Returns(Task.FromResult(items));
+            mockModel.Setup(x => x.GetItemsAsync()).Returns(Task.FromResult(items));
 
             itemsViewPresenter.Items.Add(items.First());
             itemsViewPresenter.Items.Add(items.First());
@@ -90,7 +98,7 @@ namespace Common.Test.Presenters
             var expectedResult = new Student() { Name = "name", BornDate = "01-01-1970", Country = "country_test" };
 
             // mock AddItemAsync() method
-            mockDataStore.Setup(x => x.AddItemAsync(expectedResult));
+            mockModel.Setup(x => x.AddItemAsync(expectedResult));
 
             // Act
             itemsViewPresenter.AddItemCommand.Execute(expectedResult);
@@ -111,7 +119,7 @@ namespace Common.Test.Presenters
             var item = new Student() { Name = "name", BornDate = "01-01-1970", Country = "country_test" };
 
             // mock AddItemAsync() method
-            mockDataStore.Setup(x => x.AddItemAsync(item));
+            mockModel.Setup(x => x.AddItemAsync(item));
 
             // Act
             itemsViewPresenter.AddItemCommand.Execute(item);
@@ -132,13 +140,13 @@ namespace Common.Test.Presenters
             };
 
             // mock AddItemAsync() method for generic input object of Student class
-            mockDataStore.Setup(x => x.AddItemAsync(It.IsAny<Student>()));
+            mockModel.Setup(x => x.AddItemAsync(It.IsAny<Student>()));
 
             items.ForEach(x => itemsViewPresenter.AddItemCommand.Execute(x));
             Assert.AreEqual(items.Count, itemsViewPresenter.Items.Count);
 
             // mock DeleteAllAsync() method
-            mockDataStore.Setup(x => x.DeleteAllAsync());
+            mockModel.Setup(x => x.DeleteAllAsync());
 
             // Act
             itemsViewPresenter.DeleteAllCommand.Execute(null);
@@ -168,7 +176,7 @@ namespace Common.Test.Presenters
             items.ForEach(x => itemsViewPresenter.Items.Add(x));
 
             // mock DeleteAllAsync() method
-            mockDataStore.Setup(x => x.DeleteAllAsync());
+            mockModel.Setup(x => x.DeleteAllAsync());
 
             // Act
             itemsViewPresenter.DeleteAllCommand.Execute(null);

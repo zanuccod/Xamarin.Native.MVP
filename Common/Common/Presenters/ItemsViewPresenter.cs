@@ -2,6 +2,7 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Common.Helpers;
+using Common.IViews;
 using Common.Models;
 
 namespace Common.Presenters
@@ -9,14 +10,16 @@ namespace Common.Presenters
     public class ItemsViewPresenter<T> : BaseViewPresenter, IDisposable
     {
         private readonly IDataStore<T> modelDataStore;
+        private readonly IItemsView view;
 
         public ObservableCollection<T> Items { get; private set; }
         public Command LoadItemsCommand { get; private set; }
         public Command AddItemCommand { get; private set; }
         public Command DeleteAllCommand { get; private set; }
 
-        public ItemsViewPresenter(IDataStore<T> model)
+        public ItemsViewPresenter(IItemsView view, IDataStore<T> model)
         {
+            this.view = view;
             modelDataStore = model;
             Init();
         }

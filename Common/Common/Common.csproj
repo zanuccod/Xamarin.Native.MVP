@@ -7,6 +7,7 @@
   <ItemGroup>
     <Folder Include="Presenters\" />
     <Folder Include="Entities\" />
+    <Folder Include="IViews\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="sqlite-net-pcl" Version="1.5.231" />
