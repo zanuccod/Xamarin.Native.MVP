@@ -39,7 +39,6 @@ namespace Common.Test.Presenters
             // Assert
             Assert.NotNull(itemsViewPresenter.Items);
             Assert.AreEqual(0, itemsViewPresenter.Items.Count);
-            Assert.NotNull(itemsViewPresenter.AddItemCommand);
             Assert.NotNull(itemsViewPresenter.LoadItemsCommand);
         }
 
@@ -92,43 +91,6 @@ namespace Common.Test.Presenters
         }
 
         [Test]
-        public void AddItemAsync_AddItem_Success()
-        {
-            // Arrange
-            var expectedResult = new Student() { Name = "name", BornDate = "01-01-1970", Country = "country_test" };
-
-            // mock AddItemAsync() method
-            mockModel.Setup(x => x.AddItemAsync(expectedResult));
-
-            // Act
-            itemsViewPresenter.AddItemCommand.Execute(expectedResult);
-
-            // Assert
-            Assert.True(expectedResult.Equals(itemsViewPresenter.Items.First()));
-        }
-
-        /// <summary>
-        /// If AddItemCommand don't stop when isBusy is true add new element to viewModel.Items empty list
-        /// and finally Assert condition failed.
-        /// </summary>
-        [Test]
-        public void AddItemAsync_IsBusyTrue_NothingToDo()
-        {
-            // Arrange
-            itemsViewPresenter.IsBusy = true;
-            var item = new Student() { Name = "name", BornDate = "01-01-1970", Country = "country_test" };
-
-            // mock AddItemAsync() method
-            mockModel.Setup(x => x.AddItemAsync(item));
-
-            // Act
-            itemsViewPresenter.AddItemCommand.Execute(item);
-
-            // Assert
-            Assert.AreEqual(0, itemsViewPresenter.Items.Count);
-        }
-
-        [Test]
         public void DeleteAllAsync_DeleteAllOnNotEmptyList_Success()
         {
             // Arrange
@@ -142,7 +104,7 @@ namespace Common.Test.Presenters
             // mock AddItemAsync() method for generic input object of Student class
             mockModel.Setup(x => x.AddItemAsync(It.IsAny<Student>()));
 
-            items.ForEach(x => itemsViewPresenter.AddItemCommand.Execute(x));
+            items.ForEach(x => itemsViewPresenter.Items.Add(x));
             Assert.AreEqual(items.Count, itemsViewPresenter.Items.Count);
 
             // mock DeleteAllAsync() method

@@ -13,7 +13,11 @@ namespace Common.Models
         protected SqLiteBase(string dbPath)
         {
             db = new SQLiteAsyncConnection(dbPath ?? GetDatabasePath());
+
+            InitTables();
         }
+
+        internal abstract void InitTables();
 
         public void Dispose()
         {

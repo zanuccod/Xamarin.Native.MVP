@@ -1,5 +1,6 @@
 ﻿using System;
 using Android.App;
+using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
@@ -20,8 +21,8 @@ namespace MVP.Example.Activities
     {
         private ItemsViewPresenter<Student> presenter;
 
-        private ItemsAdapter adapter;
-        private FloatingActionButton addBtn;
+        private ItemsAdapter adapterItem;
+        private FloatingActionButton btnAdd;
 
         #region Overriden Methods
 
@@ -32,42 +33,38 @@ namespace MVP.Example.Activities
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_main);
 
-            presenter = new ItemsViewPresenter<Student>(this, new StudentSqLiteDataStore());
+            presenter = new ItemsViewPresenter<Student>(this);
 
-            Toolbar toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+            Toolbar toolbar = FindViewById<Toolbar>(Resource.Id.activity_main_toolbar);
             SetSupportActionBar(toolbar);
 
             var recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
 
             recyclerView.HasFixedSize = true;
-            recyclerView.SetAdapter(adapter = new ItemsAdapter(this, presenter));
+            recyclerView.SetAdapter(adapterItem = new ItemsAdapter(this, presenter));
 
-            adapter.ItemClick += OnItemClick;
+            adapterItem.ItemClick += OnItemClick;
 
-            addBtn = FindViewById<FloatingActionButton>(Resource.Id.fab);
-            addBtn.Click += AddBtn_Click;
-
+            btnAdd = FindViewById<FloatingActionButton>(Resource.Id.fab);
+            btnAdd.Click += BtnAdd_Click;
         }
 
         protected override void OnResume()
         {
             base.OnResume();
 
-            if (presenter.Items.Count == 0)
-                presenter.LoadItemsCommand.Execute(null);
-
-            addBtn.Click += AddBtn_Click;
+            presenter.OnResume();
         }
 
         protected override void OnDestroy()
         {
             base.OnDestroy();
 
-            addBtn.Click -= AddBtn_Click;
-            addBtn.Dispose();
+            btnAdd.Click -= BtnAdd_Click;
+            btnAdd.Dispose();
 
-            adapter.ItemClick -= OnItemClick;
-            adapter.Dispose();
+            adapterItem.ItemClick -= OnItemClick;
+            adapterItem.Dispose();
 
             presenter.Dispose();
         }
@@ -81,9 +78,11 @@ namespace MVP.Example.Activities
         public override bool OnOptionsItemSelected(IMenuItem item)
         {
             int id = item.ItemId;
-            if (id == Resource.Id.action_settings)
+            switch (id)
             {
-                return true;
+                case Resource.Id.main_action_delete:
+                    presenter.DeleteAllCommand.Execute(null);
+                    break;
             }
 
             return base.OnOptionsItemSelected(item);
@@ -100,7 +99,7 @@ namespace MVP.Example.Activities
 
         #region Private Methods
 
-        private void AddBtn_Click(object sender, EventArgs eventArgs)
+        private void BtnAdd_Click(object sender, EventArgs eventArgs)
         {
             GoToDetailView();
         }
@@ -111,9 +110,16 @@ namespace MVP.Example.Activities
             GoToDetailView(item);
         }
 
-        public void GoToDetailView(params string[] parameters)
+        public void GoToDetailView(string item = null)
         {
-            
+            using (Intent myIntent = new Intent(this, typeof(ActivityItemDetail)))
+            using (Bundle bundle = new Bundle())
+            {
+                bundle.PutString("item", item);
+                myIntent.PutExtras(bundle);
+
+                StartActivity(myIntent);
+            }
         }
 
         #endregion

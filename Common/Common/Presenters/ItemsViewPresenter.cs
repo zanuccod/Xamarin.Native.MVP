@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using Common.Helper;
 using Common.Helpers;
 using Common.IViews;
 using Common.Models;
@@ -14,13 +15,13 @@ namespace Common.Presenters
 
         public ObservableCollection<T> Items { get; private set; }
         public Command LoadItemsCommand { get; private set; }
-        public Command AddItemCommand { get; private set; }
         public Command DeleteAllCommand { get; private set; }
 
-        public ItemsViewPresenter(IItemsView view, IDataStore<T> model)
+        public ItemsViewPresenter(IItemsView view, IDataStore<T> model = null)
         {
             this.view = view;
-            modelDataStore = model;
+            modelDataStore = model ?? ServiceLocator.Instance.Get<IDataStore<T>>();
+
             Init();
         }
 
@@ -29,6 +30,11 @@ namespace Common.Presenters
         public void Dispose()
         {
             modelDataStore.Dispose();
+        }
+
+        public void OnResume()
+        {
+            LoadItemsCommand.Execute(null);
         }
 
         #endregion
@@ -40,7 +46,6 @@ namespace Common.Presenters
             Items = new ObservableCollection<T>();
 
             LoadItemsCommand = new Command(async () => await LoadItems());
-            AddItemCommand = new Command<T>(async (T item) => await AddItem(item));
             DeleteAllCommand = new Command<T>(async (T item) => await DeleteAllItems());
         }
 
@@ -56,28 +61,6 @@ namespace Common.Presenters
             {
                 Items.Clear();
                 (await modelDataStore.GetItemsAsync()).ForEach(x => Items.Add(x));
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-            finally
-            {
-                IsBusy = false;
-            }
-        }
-
-        private async Task AddItem(T item)
-        {
-            if (IsBusy)
-                return;
-
-            IsBusy = true;
-
-            try
-            {
-                Items.Add(item);
-                await modelDataStore.AddItemAsync(item);
             }
             catch (Exception ex)
             {

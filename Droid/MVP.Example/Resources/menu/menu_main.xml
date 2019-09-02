@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
-    <item android:id="@+id/action_settings" android:orderInCategory="100" android:title="@string/action_settings" app:showAsAction="never" />
+    <item android:id="@+id/main_action_delete" android:orderInCategory="100" android:title="@string/action_delete_values" app:showAsAction="never" />
 </menu>

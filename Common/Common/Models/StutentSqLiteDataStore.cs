@@ -6,8 +6,15 @@ namespace Common.Models
 {
     public class StudentSqLiteDataStore : SqLiteBase, IDataStore<Student>
     {
-        public StudentSqLiteDataStore(string dbPath = null)
+        public StudentSqLiteDataStore()
+            :base(null)
+        { }
+
+        public StudentSqLiteDataStore(string dbPath)
             : base(dbPath)
+        { }
+
+        internal override void InitTables()
         {
             // create table if not exist
             db.CreateTableAsync<Student>();
