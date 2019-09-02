@@ -29,7 +29,7 @@ namespace Common.Presenters
 
         public void Dispose()
         {
-            modelDataStore.Dispose();
+
         }
 
         public void OnResume()

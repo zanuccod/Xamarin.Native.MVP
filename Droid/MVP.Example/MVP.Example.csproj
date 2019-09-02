@@ -64,6 +64,7 @@
     <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Adapters\ItemsAdapter.cs" />
     <Compile Include="Activities\ActivityItemDetail.cs" />
+    <Compile Include="MainApplication.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\AboutResources.txt" />

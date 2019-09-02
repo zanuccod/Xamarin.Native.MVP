@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Common.Entities;
 using Common.Helper;
 using Common.Helpers;
 using Common.IViews;
 using Common.Models;
+using Newtonsoft.Json;
 
 namespace Common.Presenters
 {
@@ -26,12 +28,23 @@ namespace Common.Presenters
 
         public void Dispose()
         {
-            modelDataStore.Dispose();
+
         }
 
         public void OnResume()
         {
+            var itemFromParent = view.GetDataFromParent();
 
+            if (itemFromParent != null)
+                InitializeViewWithItem(itemFromParent);
+        }
+
+        public void AddNewItem()
+        {
+            var item = view.GetStudentViewValues();
+
+            AddItemCommand.Execute(item);
+            view.CloseActivity();
         }
 
         #endregion
@@ -62,6 +75,13 @@ namespace Common.Presenters
             {
                 IsBusy = false;
             }
+        }
+
+        private void InitializeViewWithItem(string itemStr = null)
+        {
+            var item = JsonConvert.DeserializeObject<Student>(itemStr);
+            view.PopulateViewValues(item);
+            view.HideSaveBtn();
         }
 
         #endregion

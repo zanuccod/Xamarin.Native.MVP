@@ -37,12 +37,12 @@ namespace MVP.Example.Activities
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_item_detail);
 
-            presenter = new ItemsDetailViewPresenter<Student>(this, new StudentSqLiteDataStore());
+            presenter = new ItemsDetailViewPresenter<Student>(this);
 
             toolbar = (Toolbar)FindViewById(Resource.Id.activity_item_detail_toolbar);
             SetSupportActionBar(toolbar);
 
-            // avoid to come back from back arrow on action bar
+            // allow to come back from back arrow button on action bar
             SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 
             editTextName = FindViewById<EditText>(Resource.Id.item_name);
@@ -51,20 +51,13 @@ namespace MVP.Example.Activities
 
             btnSave = FindViewById<FloatingActionButton>(Resource.Id.btn_save);
             btnSave.Click += BtnSave_Click;
-
-            Console.WriteLine("###### onCreate ActivityItemDetail");
         }
 
         protected override void OnResume()
         {
             base.OnResume();
 
-            Console.WriteLine("###### onResume ActivityItemDetail");
-            if (!string.IsNullOrEmpty(Intent.GetStringExtra("item")))
-            {
-                var item = JsonConvert.DeserializeObject<Student>(Intent.GetStringExtra("item"));
-                PopulateViewValues(item);
-            }
+            presenter.OnResume();
         }
 
         protected override void OnDestroy()
@@ -75,7 +68,6 @@ namespace MVP.Example.Activities
             btnSave.Dispose();
 
             toolbar.Dispose();
-
             presenter.Dispose();
         }
 
@@ -96,22 +88,17 @@ namespace MVP.Example.Activities
 
         private void BtnSave_Click(object sender, EventArgs e)
         {
-            var item = GetStudentViewValues();
-
-            presenter.AddItemCommand.Execute(item);
-            Finish();
+            presenter.AddNewItem();
         }
 
-        private void PopulateViewValues(Student s)
+        public void PopulateViewValues(Student s)
         {
             editTextName.Text = s.Name;
             editTextCounty.Text = s.Country;
             editTextBornDate.Text = s.BornDate;
-
-            btnSave.Visibility = ViewStates.Gone;
         }
 
-        private Student GetStudentViewValues()
+        public Student GetStudentViewValues()
         {
             return new Student()
             {
@@ -119,6 +106,24 @@ namespace MVP.Example.Activities
                 Country = editTextCounty.Text,
                 BornDate = editTextBornDate.Text
             };
+        }
+
+        public void CloseActivity()
+        {
+            Finish();
+        }
+
+        public void HideSaveBtn()
+        {
+            btnSave.Visibility = ViewStates.Gone;
+        }
+
+        public string GetDataFromParent()
+        {
+            if (Intent.HasExtra("item") && !string.IsNullOrEmpty(Intent.GetStringExtra("item")))
+                return Intent.GetStringExtra("item");
+            else
+                return null;
         }
 
         #endregion
