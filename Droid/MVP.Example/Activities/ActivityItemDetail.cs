@@ -84,12 +84,7 @@ namespace MVP.Example.Activities
 
         #endregion
 
-        #region Private Methods
-
-        private void BtnSave_Click(object sender, EventArgs e)
-        {
-            presenter.AddNewItem();
-        }
+        #region Interface Methods
 
         public void PopulateViewValues(Student s)
         {
@@ -122,8 +117,16 @@ namespace MVP.Example.Activities
         {
             if (Intent.HasExtra("item") && !string.IsNullOrEmpty(Intent.GetStringExtra("item")))
                 return Intent.GetStringExtra("item");
-            else
-                return null;
+            return null;
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void BtnSave_Click(object sender, EventArgs e)
+        {
+            presenter.AddNewItem();
         }
 
         #endregion

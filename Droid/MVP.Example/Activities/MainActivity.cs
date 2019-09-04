@@ -97,18 +97,7 @@ namespace MVP.Example.Activities
 
         #endregion
 
-        #region Private Methods
-
-        private void BtnAdd_Click(object sender, EventArgs eventArgs)
-        {
-            GoToDetailView();
-        }
-
-        private void OnItemClick(object sender, Student s)
-        {
-            var item = JsonConvert.SerializeObject(s);
-            GoToDetailView(item);
-        }
+        #region Interface Methods
 
         public void GoToDetailView(string item = null)
         {
@@ -120,6 +109,20 @@ namespace MVP.Example.Activities
 
                 StartActivity(myIntent);
             }
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void BtnAdd_Click(object sender, EventArgs eventArgs)
+        {
+            presenter.AddItem();
+        }
+
+        private void OnItemClick(object sender, Student s)
+        {
+            presenter.ViewItem(s);
         }
 
         #endregion

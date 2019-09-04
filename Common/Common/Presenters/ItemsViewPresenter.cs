@@ -5,6 +5,7 @@ using Common.Helper;
 using Common.Helpers;
 using Common.IViews;
 using Common.Models;
+using Newtonsoft.Json;
 
 namespace Common.Presenters
 {
@@ -35,6 +36,17 @@ namespace Common.Presenters
         public void OnResume()
         {
             LoadItemsCommand.Execute(null);
+        }
+
+        public void AddItem()
+        {
+            view.GoToDetailView();
+        }
+
+        public void ViewItem(T item)
+        {
+            var strItem = JsonConvert.SerializeObject(item);
+            view.GoToDetailView(strItem);
         }
 
         #endregion

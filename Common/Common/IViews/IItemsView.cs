@@ -5,6 +5,6 @@ namespace Common.IViews
 {
     public interface IItemsView
     {
-        void GoToDetailView(string item);
+        void GoToDetailView(string item = null);
     }
 }
