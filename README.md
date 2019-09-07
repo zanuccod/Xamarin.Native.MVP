@@ -11,5 +11,9 @@ The application is composed of a simple list of item, in this case we decide a l
 
 The example is composed of two projects: ***Common*** and ***MVP.Example***, and both are correlated with the related test project.
 
+**Common** project have separate **UnitTest** to check correctness of the model (interaction to the database) and presenters (interaction between model, presenter and view).
+
+**MVP.Example** have dedicated **UITest** project to test the view operations.
+
 The decision to develop all common function on separate project is for multi platform purpouses. 
 If we want to implement same application on IOS we have only to implement the views and to implements view functions with the function offers by the presenter defined in the common project.
