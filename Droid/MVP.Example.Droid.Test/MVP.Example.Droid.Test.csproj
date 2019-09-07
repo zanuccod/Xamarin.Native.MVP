@@ -35,9 +35,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Tests.cs" />
+    <Compile Include="AppInitializer.cs" />
+    <Compile Include="Activities\MainActivityTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Activities\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

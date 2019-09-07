@@ -45,7 +45,7 @@ namespace MVP.Example.Activities
 
             adapterItem.ItemClick += OnItemClick;
 
-            btnAdd = FindViewById<FloatingActionButton>(Resource.Id.fab);
+            btnAdd = FindViewById<FloatingActionButton>(Resource.Id.btn_add);
             btnAdd.Click += BtnAdd_Click;
         }
 

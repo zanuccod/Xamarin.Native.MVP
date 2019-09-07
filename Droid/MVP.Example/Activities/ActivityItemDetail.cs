@@ -37,6 +37,8 @@ namespace MVP.Example.Activities
             Xamarin.Essentials.Platform.Init(this, savedInstanceState);
             SetContentView(Resource.Layout.activity_item_detail);
 
+            Title = "activity_item_detail";
+
             presenter = new ItemsDetailViewPresenter<Student>(this);
 
             toolbar = (Toolbar)FindViewById(Resource.Id.activity_item_detail_toolbar);
@@ -51,6 +53,7 @@ namespace MVP.Example.Activities
 
             btnSave = FindViewById<FloatingActionButton>(Resource.Id.btn_save);
             btnSave.Click += BtnSave_Click;
+
         }
 
         protected override void OnResume()

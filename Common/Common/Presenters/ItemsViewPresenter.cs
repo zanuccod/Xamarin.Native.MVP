@@ -29,9 +29,7 @@ namespace Common.Presenters
         #region Public Methods
 
         public void Dispose()
-        {
-
-        }
+        { }
 
         public void OnResume()
         {
