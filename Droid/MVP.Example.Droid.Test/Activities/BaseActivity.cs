@@ -7,6 +7,7 @@ namespace MVP.Example.Droid.Test.Activities
 {
     public abstract class BaseActivity
     {
+        #region Constructors
 
         protected BaseActivity(IApp app, string pageTitle)
         {
