@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 
 namespace Common.Models
 {
-    public interface IDataStore<T> : IDisposable
+    public interface IDataStore<T>
     {
         Task AddItemAsync(T item);
         Task UpdateItemAsync(T item);
